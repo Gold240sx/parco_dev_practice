@@ -14,16 +14,70 @@ const inputStyles = `border-[1.5px] text-[18px] py-[10px] pl-[14px] radius-[8.8p
 type TextInputProps = {
 	props: {
 		name: string
-		type?: "text" | "number" | "email" | "password"
 		label: string
 		required: boolean
+		min?: number
+		max?: number
+		className?: string
+		minLength?: number
+		maxLength?: number
+		placeholder?: string
+		questionMark?: boolean
+		tooltipText?: string
+		type?:
+			| "text"
+			| "number"
+			| "email"
+			| "phone"
+			| "password"
+			| "name"
+			| "fullName"
+			| "firstName"
+			| "lastName"
+			| "username"
 	}
 }
 
 const TextInput = ({ props }: TextInputProps) => {
-	const { name, type = "text", label, required } = props
+	const {
+		name,
+		type = "text",
+		label,
+		required,
+		placeholder,
+		className,
+		min,
+		max,
+		minLength,
+		maxLength,
+		questionMark = false,
+		tooltipText = false,
+	} = props
 
 	const errors = false // replace with validation logic from zod.
+	const value = null // replace with value from react-hook-form
+
+	const autocomplete = (() => {
+		// Returns the correct autocomplete value based on the type prop
+		switch (type || name) {
+			case "name":
+				return "name"
+			case "fullName":
+				return "name"
+			case "firstName":
+				return "given-name"
+			case "lastName":
+				return "family-name"
+			case "username":
+				return "username"
+			case "phone":
+				return "tel"
+			case "email":
+				return "email"
+			default:
+				return "on"
+		}
+	})()
 
 	return (
 		<div>
@@ -34,41 +88,47 @@ const TextInput = ({ props }: TextInputProps) => {
 						name,
 						required,
 						requiredLabel: {
-							labelClassName: "text-[#66D531]",
+							labelClassName: "",
 						},
 						requiredPosition: "inline",
-						hasQuestionTooltip: true,
-						tooltipText: "This is a tooltip",
+						hasQuestionTooltip: questionMark,
+						tooltipText: tooltipText || "",
 					}}
 				/>
 				<div className="relative">
 					<Input
 						id="input-10"
-						className={`peer pe-9 ${inputStyles}`}
-						placeholder="Email"
-						data-validated={errors ? "false" : "true"}
+						className={`peer pe-9 ${inputStyles} ${
+							errors ? "!border-red-300" : ""
+						}`}
+						autoCapitalize="on"
+						autoComplete={autocomplete}
+						placeholder={placeholder}
+						data-validated={
+							!errors && value === null ? "false" : "true"
+						}
+						type={type === "phone" ? "text" : type}
 						data-error={errors ? "true" : "false"}
 						required={required}
-						type={type}
 					/>
 					<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
 						{!errors && (
 							<ImCheckmark
 								size={12}
-								className="text-[#66D531]"
+								className={`text-[#66D531]`}
 								aria-hidden="true"
 							/>
 						)}
 						{errors && (
 							<BiX
-								size={12}
-								className="text-red-500"
+								size={20}
+								className={`text-red-500 stroke-2`}
 								aria-hidden="true"
 							/>
 						)}
 					</div>
 				</div>
-				{!errors && (
+				{errors && (
 					<p
 						className="mt-2 text-xs text-destructive text-red-500 px-[14px]"
 						role="alert"

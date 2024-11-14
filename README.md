@@ -37,5 +37,7 @@ to see the result.
 -   React-icons
 -   Shadcn / OriginUI
 -   React-hook-form
+-   React-aria
+-   Date-fns
 -   Zod
 -   SweetAlert2

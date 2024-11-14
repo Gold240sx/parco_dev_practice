@@ -21,6 +21,7 @@ type InputLabelProps = {
 		label: string
 		name: string
 		required: boolean
+		labelClassName?: string
 		requiredPosition: requiredPosition
 		requiredLabel: InputLabelStyleType
 		hasQuestionTooltip: boolean
@@ -33,30 +34,35 @@ const InputLabel = ({ props }: InputLabelProps) => {
 		label,
 		name,
 		required,
+		labelClassName,
 		requiredPosition = "inline",
+		requiredLabel,
 		hasQuestionTooltip,
 		tooltipText,
 	} = props
 	return (
-		<Label htmlFor={name} className="flex gap-2">
-			<p>{capitalize(label)}</p>
+		<Label htmlFor={name} className={`flex gap-2 ${labelClassName}`}>
+			<p className={`font-normal ${requiredLabel.labelClassName}`}>
+				{capitalize(label)}
+			</p>
 			{required && (
 				<p className={requiredPosition}>
-					<span className={`text-red-500 text-[18px]`}>*</span>
+					<span className={`text-red-400 font-normal text-[18px]`}>
+						*
+					</span>
 				</p>
 			)}
 			{hasQuestionTooltip && tooltipText && tooltipText.length > 0 && (
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger>
-							{" "}
 							<AiFillQuestionCircle
 								className="text-[#262627]"
 								size={18}
 							/>
 						</TooltipTrigger>
-						<TooltipContent className="p-4 bg-zinc-800">
-							<p className="flex-wrap text-[18px]">
+						<TooltipContent className="p-4 bg-zinc-800 text-balance max-w-[250px] ">
+							<p className="flex-wrap text-[18px] leading-6 text-center">
 								{tooltipText}
 							</p>
 						</TooltipContent>
