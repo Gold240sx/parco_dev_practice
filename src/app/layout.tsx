@@ -1,8 +1,9 @@
-import type { Metadata } from "next"
-import "./globals.css"
 import React from "react"
-import { LocalStorageProvider } from "@/context/localStorageContext"
+import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { LocalStorageProvider } from "@/context/localStorageContext"
+import { Toaster } from "@/components/ui/toaster"
+import "./globals.css"
 
 const inter = localFont({
 	src: [
@@ -35,6 +36,7 @@ export default function RootLayout({
 				<body
 					className={`${inter.variable} ${poppins.variable} antialiased relative`}>
 					{children}
+					<Toaster />
 				</body>
 			</html>
 		</LocalStorageProvider>

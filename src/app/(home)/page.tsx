@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Modal from "@/components/layout/globalModal"
 import React, { useState, useEffect } from "react"
+import FormBody from "@/components/form/formBody"
 
 export default function Home() {
 	const searchParams = useSearchParams()
@@ -25,7 +26,11 @@ export default function Home() {
 	}, [modalOpen])
 
 	return (
-		<div className="relative w-full h-full">
+		<div className="relative h-full w-full flex-grow">
+			<div className="grid grid-cols-1 md:grid-cols-2 w-full h-full">
+				<FormBody className="col-span-1" />
+				<div className=" col-span-1"></div>
+			</div>
 			<Modal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}

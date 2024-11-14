@@ -9,12 +9,12 @@ export default function TestLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<div className="flex flex-col min-h-screen">
-			<div className="w-screen h-fit bg-white">
+		<div className="flex flex-col min-h-screen h-full">
+			<div className="w-screen bg-white">
 				<Navbar />
-				<SubNavbarSaveNotification className="!absolute top-[75px] right-8 animate-pulse" />
+				<SubNavbarSaveNotification className="!absolute top-[75px] right-8" />
 			</div>
-			<main className="flex-grow">{children}</main>
+			<main className="flex-grow h-full">{children}</main>
 			<Footer />
 		</div>
 	)
