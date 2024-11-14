@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap");
+
+/* Tailwind base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--background: #ffffff;
+	--foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+		--bg_gradient: linear-gradient(0deg, #cad4ed 100%, #d6f4fe 100%);
+		--primary: "#344767";
+	}
+}
+
+body {
+	color: var(--foreground);
+	background: var(--bg_gradient);
+	font-family: "Inter", sans-serif;
+}
+
+@layer base {
+	@variants dark {
+		body {
+			color: var(--foreground);
+			background: var(--background);
+		}
+	}
+
+	/* Fonts */
+	h1 {
+		@apply text-h1-mui font-light font-inter;
+	}
+
+	h2 {
+		@apply text-h2-mui font-bold font-inter;
+	}
+
+	h3 {
+		@apply text-h3-mui font-semibold font-inter;
+	}
+
+	h4 {
+		@apply text-h4-mui font-semibold font-inter;
+	}
+
+	h5 {
+		@apply text-h5-mui font-medium font-inter;
+	}
+
+	.layout-main {
+		/* screen height - 85px */
+		min-height: calc(100vh - 85px);
+	}
+}
