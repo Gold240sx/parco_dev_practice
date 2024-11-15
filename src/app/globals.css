@@ -63,16 +63,17 @@ body {
 		--radius: 0.5rem;
 	}
 
-	.swal2-title {
-		padding-inline: 80px !important;
-		padding-block: 60px !important;
-	}
-
 	.custom-swal-popup {
 		width: fit-content;
 		min-width: 60vw !important;
 		max-width: min(900px, 80vw) !important;
 		margin: 40px auto;
+		@apply !m-0;
+	}
+
+	.custom-swal-popup .swal2-title {
+		font-size: 1 rem;
+		@apply !text-nowrap;
 	}
 
 	@media (max-width: 250px) {

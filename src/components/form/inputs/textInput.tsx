@@ -9,7 +9,7 @@ import { Controller, useFormContext } from "react-hook-form"
 // Styles
 const inputRadius = "rounded-[8.8px]"
 const borderColor = "border-[#D2D6DA]"
-const inputStyles = `border-[1.5px] text-[18px] py-[10px] pl-[14px] radius-[8.8px] min-w-[100px] placeholder:text-[#A3A7AA] text-[#485057] border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] data-[validated='true']:border-[#66D531] data-[validated='true']:focus-visible:ring-0 data-[validated='true']:hover:border-[#328E08] data-[validated='true']:ring-0 data-[error='true']:focus-visible:ring-0 !data-[error='true']:focus-visible:border-red-500`
+const inputStyles = `border-[1.5px] text-[18px] py-[20px] pl-[14px] radius-[8.8px] placeholder:text-[#A3A7AA] text-[#485057] border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] data-[validated='true']:border-[#66D531] data-[validated='true']:focus-visible:ring-0 data-[validated='true']:hover:border-[#328E08] data-[validated='true']:ring-0 data-[error='true']:focus-visible:ring-0 !data-[error='true']:focus-visible:border-red-500`
 
 type TextInputProps = {
 	props: {
@@ -19,6 +19,7 @@ type TextInputProps = {
 		min?: number
 		max?: number
 		hideError?: boolean
+		labelClassName?: string
 		onChange?: (value: string) => void
 		className?: string
 		minLength?: number
@@ -47,6 +48,7 @@ const TextInput = ({ props }: TextInputProps) => {
 		label,
 		required,
 		placeholder,
+		labelClassName,
 		hideError = false,
 		className,
 		onChange,
@@ -119,6 +121,7 @@ const TextInput = ({ props }: TextInputProps) => {
 						requiredLabel: {
 							labelClassName: "",
 						},
+						labelClassName,
 						requiredPosition: "inline",
 						hasQuestionTooltip: questionMark,
 						tooltipText: tooltipText || "",

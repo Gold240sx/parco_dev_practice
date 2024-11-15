@@ -22,7 +22,7 @@ export const Step2 = () => {
 	}
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-[20px]">
 			<h5 className="text-3xl mb-4 text-balance font-[500]">
 				Appointment Details
 			</h5>
@@ -40,7 +40,7 @@ export const Step2 = () => {
 									onSelect={onChange} // Update react-hook-form state
 									fromDate={new Date()}
 									toDate={addOneMonthToCurrentDate()}
-									className="border border-gray-300 rounded-lg shadow-sm"
+									className=""
 								/>
 								{errors.date && (
 									<p className="text-red-500 text-sm mt-1">
@@ -82,12 +82,15 @@ export const Step2 = () => {
 							label: "4:00 PM - 6:00 PM",
 						},
 					],
-					placeholder: `Select a time slot for ${date?.toDateString()}`,
+					placeholder: `Select an available time for ${date?.toDateString()}`,
 					className: "col-span-1",
 					tooltipText: "The day you were born",
 				}}
 			/>
-			<RadioCardInputGrouping name="platform" label="Platform" />
+			<RadioCardInputGrouping
+				name="platform"
+				label="What platform would you prefer for our meeting?"
+			/>
 		</div>
 	)
 }

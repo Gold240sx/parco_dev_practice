@@ -36,19 +36,34 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 		// Set form submission state
 		return new Promise<void>((resolve) => {
 			const date = format(data.date, "MMMM do, yyyy")
-			// Simulate server request with a delay
+			const payload = {
+				...data,
+			}
+
 			setTimeout(async () => {
 				console.log("Form Submitted", data)
-				// await UploadDataToSupabase(data)
-				Swal.fire({
-					title: "Appointment Set!",
-					showCloseButton: false,
-					showConfirmButton: false,
-					padding: "60px 80px",
-					customClass: {
-						popup: "custom-swal-popup",
-					},
-					html: `
+				try {
+					const response = await fetch("/api/submitAppointment", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(payload),
+					})
+
+					if (!response.ok) {
+						throw new Error("Failed to submit appointment details")
+					}
+
+					Swal.fire({
+						title: "Appointment Set!",
+						showCloseButton: false,
+						showConfirmButton: false,
+						// padding: "60px 80px", // commented out because of undesired padding on small screen sizes.
+						customClass: {
+							popup: "custom-swal-popup",
+						},
+						html: `
 							<p class="text-balance">
 								Please check your email for the meeting link. You are booked for a 
 								<b>Federal Consult on ${date} with ${salesman}</b>
@@ -59,12 +74,23 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 									<b>Didn't get an email?</b>
 								</p>
 								<a target="_blank" href="/">
-									<button class="bg-[#60BE64] text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap">
+									<button class="bg-[#60BE64] hover:bg-[#6CD570] ease-in duration-100 transition-colors text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap">
 										Create Account
 									</button>
 								</a>
 							</div>`,
-				})
+					})
+				} catch (error) {
+					console.error(
+						"Error submitting appointment details:",
+						error
+					)
+					Swal.fire({
+						title: "Error",
+						text: "Failed to submit appointment details. Please try again.",
+						icon: "error",
+					})
+				}
 				// Submission Form Function set to handleFullSubmit (search for)
 				setIsFormSubmitted?.(true)
 				resolve() // Resolve the promise after the delay
@@ -74,7 +100,7 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 
 	return (
 		<div
-			className={`col-span-1 bg-white min-w-[434px] place-items-center justify-center items-center px-[60px] min-h-screen pt-[60px] !space-y-[20px] !pb-[140px] text-black`}>
+			className={`col-span-1 bg-white justify-center px-[40px] sm:px-[80px] pt-[60px] !space-y-[20px] !pb-[140px] text-[#262627] flex flex-col flex-grow h-full`}>
 			<MultiPageForm
 				schemas={schemas}
 				isReadyToClosePostForm={isReadyToClosePostForm}
@@ -85,11 +111,11 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 					defaultValues: {
 						firstName: "John",
 						lastName: "Smith",
-						// phoneNumber: "(469) 269-9639",
+						phoneNumber: "(469) 269-9639",
 						email: "john.doe@usda.com",
-						dob: {
-							// month: "01",
-							// day: "01",
+						dobDetails: {
+							month: "03",
+							day: "12",
 							year: "1960",
 						},
 						// age: 30,
@@ -97,7 +123,7 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 				}}
 				setModalOpen={(isOpen: boolean) => setModalOpen?.(isOpen)}
 				confirmPageChildren={
-					<div className="w-full min-h-fit md:max-w-screen-md max-w-full mx-auto relative">
+					<div className="w-full min-h-fit md:max-w-screen-md max-w-full mx-auto flex-grow relative">
 						{/* <FormPreview
 							pageNames={pageNames}
 							formState={{
@@ -120,7 +146,7 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 							<Link href="/">
 								<button
 									onClick={() => window.location.reload()}
-									className="bg-sky-500 text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap mt-8">
+									className="bg-sky-500 hover:bg-sky-400 ease-in duration-100 transition-colors text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap mt-8">
 									Go to Dashboard
 								</button>
 							</Link>

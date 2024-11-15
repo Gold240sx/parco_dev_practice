@@ -1,7 +1,7 @@
 import { date, z } from "zod"
 import { validUSAreaCodes } from "@/types/arrayLists/validUSAreaCodes"
 
-export const dateOfBirthSchema = z.object({
+export const dateOfBirthObjectSchema = z.object({
 	day: z.string().min(2, { message: "Required" }).max(31),
 	month: z.string().min(2, { message: "Required" }).max(12),
 	year: z
@@ -16,6 +16,8 @@ export const dateOfBirthSchema = z.object({
 			}
 		),
 })
+
+export const dateOfBirthSchema = z.string()
 
 export const age = z.number().int().min(18).max(120)
 export const platformSchema = z.enum(["zoom", "google_meet", "teams"])
@@ -54,6 +56,7 @@ export const pageOneSchema = z
 				message:
 					"Phone number cannot contain all the same digits (e.g., 0000000000)",
 			}),
+		dobDetails: dateOfBirthObjectSchema.optional(),
 		dob: dateOfBirthSchema.optional(),
 		age: age.optional(),
 	})

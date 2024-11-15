@@ -27,58 +27,42 @@ type DOBInputGroupType = {
 	}
 }
 
-const DOBInputGroup = ({ props }: DOBInputGroupType) => {
-	const { currentDate } = props
-	const {
-		control,
-		setValue,
-		setError,
-		getValues,
-		watch,
-		formState: { errors },
-	} = useFormContext()
+const validateDate = (
+	value: string,
+	allValues: { dob: { month: string; day: string; year: string } }
+) => {
+	const { month, day, year } = allValues.dob
+	if (!month || !day || !year) return true
 
-	const selectedMonth = watch("dob.month")
-	const selectedYear = watch("dob.year")
-	const [dayOptions, setDayOptions] = useState<
-		{ value: string; label: string }[]
-	>([])
+	const date = new Date(`${year}-${month}-${day}`)
+	const isValidDate = date.getDate() === parseInt(day, 10)
+
+	if (month === "02") {
+		const isLeapYear =
+			parseInt(year, 10) % 4 === 0 &&
+			(parseInt(year, 10) % 100 !== 0 || parseInt(year, 10) % 400 === 0)
+		if (isLeapYear && parseInt(day, 10) > 29)
+			return "Invalid date for February in a leap year"
+		if (!isLeapYear && parseInt(day, 10) > 28)
+			return "Invalid date for February in a non-leap year"
+	}
+
+	return isValidDate || "Invalid date"
+}
+
+const DOBInputGroup = ({ props }: DOBInputGroupType) => {
+	const { control, setValue, getValues, watch } = useFormContext()
+
+	const month = watch("dobDetails.month")
+	const day = watch("dobDetails.day")
+	const year = watch("dobDetails.year")
 
 	useEffect(() => {
-		if (selectedMonth) {
-			const days = noOfDays(
-				selectedMonth,
-				selectedYear ? parseInt(selectedYear) : null
-			)
-			const daysArray = days.map((day) => ({
-				value: day.toString(),
-				label: day.toString(),
-			}))
-			setDayOptions(daysArray)
-		} else {
-			setDayOptions([]) // Clear day options if month is not selected
+		if (month && day && year) {
+			const formattedDOB = `${month}/${day}/${year}`
+			setValue("dob", formattedDOB)
 		}
-	}, [selectedMonth, selectedYear])
-
-	// Custom validation for non-leap year with February 29
-	const validateDate = () => {
-		const dob = getValues("dob")
-		const month = getValues("dob.month")
-		const day = getValues("dob.day")
-		const year = parseInt(getValues("dob.year") || "0")
-
-		if (month === "02" && day === "29" && year) {
-			// Check if the year is not a leap year
-			if (!(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0))) {
-				setError("dob.month", {
-					type: "manual",
-					message: "February only has 28 days in this year.",
-				})
-				return "February only has 28 days in this year."
-			}
-		}
-		return true
-	}
+	}, [month, day, year, setValue])
 
 	return (
 		<>
@@ -95,22 +79,33 @@ const DOBInputGroup = ({ props }: DOBInputGroupType) => {
 					tooltipText: "Explanation here",
 				}}
 			/>
-
-			<div className="grid grid-cols-1 mt-2 sm:grid-cols-3 gap-1.5 text-[#262627]">
+			<div className="grid mt-2 xs:grid-cols-3 gap-1.5 text-[#262627]">
 				<Controller
-					name="dob.month"
+					name="dobDetails.month"
 					control={control}
 					rules={{
-						validate: validateDate,
+						required: "Month is required",
+						validate: (value) =>
+							validateDate(
+								value,
+								getValues() as {
+									dob: {
+										month: string
+										day: string
+										year: string
+									}
+								}
+							),
 					}}
 					render={({ field }) => (
 						<SelectInput
 							{...field}
 							props={{
 								isMulti: false,
-								name: "dob.month",
+								name: "dobDetails.month",
 								label: "Month",
 								type: "text",
+								labelClassName: "text-[16px]",
 								hideError: true,
 								// max: currentDate.getFullYear(),
 								required: false,
@@ -122,47 +117,71 @@ const DOBInputGroup = ({ props }: DOBInputGroupType) => {
 					)}
 				/>
 				<Controller
-					name="dob.day"
+					name="dobDetails.day"
 					control={control}
 					rules={{
-						validate: validateDate,
+						required: "Month is required",
+						validate: (value) =>
+							validateDate(
+								value,
+								getValues() as {
+									dob: {
+										month: string
+										day: string
+										year: string
+									}
+								}
+							),
 					}}
 					render={({ field }) => (
 						<SelectInput
 							{...field}
 							props={{
 								isMulti: false,
-								name: "dob.day",
+								name: "dobDetails.day",
 								label: "Day",
 								type: "text",
+								options: Array.from({ length: 31 }, (_, i) => ({
+									value: String(i + 1).padStart(2, "0"),
+									label: String(i + 1).padStart(2, "0"),
+								})),
+								labelClassName: "text-[16px]",
 								hideError: true,
-								disabled:
-									dayOptions.length === 0 ||
-									getValues("dob.month") === "",
 								// max: currentDate.getFullYear(),
 								required: false,
 								placeholder: "dd",
 								className: "col-span-1",
-								options: dayOptions,
 							}}
 						/>
 					)}
 				/>
 				<Controller
-					name="dob.year"
+					name="dobDetails.year"
 					control={control}
 					rules={{
-						validate: validateDate,
+						required: "Month is required",
+						validate: (value) =>
+							validateDate(
+								value,
+								getValues() as {
+									dob: {
+										month: string
+										day: string
+										year: string
+									}
+								}
+							),
 					}}
 					render={({ field }) => (
 						<TextInput
 							{...field}
 							props={{
-								name: "dob.year",
+								name: "dobDetails.year",
 								label: "Year",
 								type: "text",
 								hideError: true,
 								// max: currentDate.getFullYear(),
+								labelClassName: "text-[16px]",
 								required: false,
 								placeholder: "yyyy",
 								className: "col-span-1",

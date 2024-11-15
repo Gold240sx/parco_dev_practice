@@ -23,8 +23,8 @@ export default function Home() {
 	}, [modalOpen])
 
 	return (
-		<div className="relative h-full w-full flex-grow">
-			<div className="grid grid-cols-1 md:grid-cols-2 w-full h-full">
+		<div className="relative h-full w-full flex-col flex flex-grow">
+			<div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-full flex-grow">
 				<OnboardingForm
 					props={{
 						setIsFormSubmitted: (value: boolean) => {},
@@ -32,12 +32,12 @@ export default function Home() {
 						user: {}, // replace with actual user data
 					}}
 				/>
-				<div className=" col-span-1"></div>
+				<div className="hidden md:col-span-1"></div>
 			</div>
 			<Modal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
-				className="bg-white max-w-screen-lg rounded w-auto h-auto m-8 lg:mx-auto relative text-black">
+				className="bg-white max-w-screen-lg rounded w-auto h-auto m-8 lg:mx-auto relative text-[#262627]">
 				<h1 className="text-3xl pb-2">
 					Speedy Service Quote Inquiry Form
 				</h1>
