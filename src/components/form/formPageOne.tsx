@@ -1,6 +1,7 @@
 import React from "react"
 import TextInput from "./inputs/textInput"
 import DOBInputGroup from "./inputs/dobInputGroup"
+import PhoneNumberInput from "./inputs/phoneNumberInput"
 
 type FormPageOneProps = {
 	props: {
@@ -47,6 +48,17 @@ const FormPageOne = ({ props }: FormPageOneProps) => {
 						label: "Phone Number",
 						required: true,
 						type: "phone",
+						questionMark: true,
+						tooltipText:
+							"A mobile or home phone number, whichever you're more likely to answer!",
+					}}
+				/>
+				<PhoneNumberInput
+					props={{
+						name: "phoneNumber",
+						label: "Phone Number",
+						required: true,
+						placeholder: "(123) 456-6890",
 						questionMark: true,
 						tooltipText:
 							"A mobile or home phone number, whichever you're more likely to answer!",

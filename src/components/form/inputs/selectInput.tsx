@@ -72,7 +72,10 @@ const SelectInput = ({ props }: SelectInputProps) => {
 				/>
 				<Select onValueChange={(value) => onChange && onChange(value)}>
 					<SelectTrigger id={name}>
-						<SelectValue placeholder={placeholder} />
+						<SelectValue
+							placeholder={placeholder}
+							className="!placeholder:text-[#A3A7AA] !text-[#485057] "
+						/>
 					</SelectTrigger>
 					<SelectContent>
 						{props.options.map((option) => (

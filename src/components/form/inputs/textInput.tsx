@@ -18,6 +18,7 @@ type TextInputProps = {
 		required: boolean
 		min?: number
 		max?: number
+		onChange?: (value: string) => void
 		className?: string
 		minLength?: number
 		maxLength?: number
@@ -46,6 +47,7 @@ const TextInput = ({ props }: TextInputProps) => {
 		required,
 		placeholder,
 		className,
+		onChange,
 		min,
 		max,
 		minLength,
@@ -107,6 +109,7 @@ const TextInput = ({ props }: TextInputProps) => {
 						data-validated={
 							!errors && value === null ? "false" : "true"
 						}
+						onChange={(e) => onChange && onChange(e.target.value)}
 						type={type === "phone" ? "text" : type}
 						data-error={errors ? "true" : "false"}
 						required={required}
