@@ -1,16 +1,19 @@
-import React from "react"
-import TextInput from "./inputs/textInput"
-import DOBInputGroup from "./inputs/dobInputGroup"
-import PhoneNumberInput from "./inputs/phoneNumberInput"
+"use client"
+import React, { useState, useMemo } from "react"
+import { useFormContext } from "react-hook-form"
+import TextInput from "@/components/form/inputs/textInput"
+import SelectInput from "../inputs/selectInput"
+import DOBInputGroup from "@/components/form/inputs/dobInputGroup"
+import PhoneNumberInput from "@/components/form/inputs/phoneNumberInput"
+import { pageOneSchema } from "../formSchema"
 
-type FormPageOneProps = {
-	props: {
-		nosyAgeField: boolean
-		setNosyAgeField: (value: boolean) => void
-	}
-}
+export const Step1 = () => {
+	const currentDate = useMemo(() => new Date(), [])
+	const [nosyAgeField, setNosyAgeField] = useState(false)
+	const {
+		formState: { errors },
+	} = useFormContext()
 
-const FormPageOne = ({ props }: FormPageOneProps) => {
 	return (
 		<>
 			<h5 className="text-3xl mb-4 text-balance font-[500]">
@@ -19,7 +22,6 @@ const FormPageOne = ({ props }: FormPageOneProps) => {
 			<p className="body1 text-[#495057]">
 				First we need to know your name, phone number, and birthday
 			</p>
-			{/* <div className="border border-black px-6 py-10 my-10 rounded-2xl"> */}
 			<div className=" flex flex-col gap-[20px] my-10">
 				<TextInput
 					props={{
@@ -64,9 +66,9 @@ const FormPageOne = ({ props }: FormPageOneProps) => {
 					}}
 				/>
 
-				{props.nosyAgeField === false ? (
+				{nosyAgeField === false ? (
 					<div className="flex flex-col gap-1">
-						<DOBInputGroup />
+						<DOBInputGroup props={{ currentDate }} />
 					</div>
 				) : (
 					<TextInput
@@ -85,18 +87,52 @@ const FormPageOne = ({ props }: FormPageOneProps) => {
 				)}
 				<button
 					type="button"
-					onClick={() => props.setNosyAgeField(!props.nosyAgeField)}
+					onClick={() => setNosyAgeField(!nosyAgeField)}
 					className="  cursor-pointer rounded-md !-mt-2 mx-[14px] flex mr-auto w-fit">
 					<p className="hover:underline !text-sky-500 underline-offset-2 !decoration-sky-500 w-fit">
-						{props.nosyAgeField
+						{nosyAgeField
 							? "Enter date instead"
 							: "Use my age instead?"}
 					</p>
 				</button>
+
+				<div>
+					{/* @ts-ignore */}
+					{errors?.dob?.month && (
+						<p className="text-red-500 px-[14px]">
+							{/* @ts-ignore */}
+							{errors.dob.month && "DOB: Month - "}
+							{/* @ts-ignore */}
+							{errors.dob.month?.message}
+						</p>
+					)}
+				</div>
+				<div>
+					{/* @ts-ignore */}
+					{errors?.dob?.day && (
+						<p className="text-red-500 px-[14px]">
+							{/* @ts-ignore */}
+							{errors.dob.day && "DOB: Day - "}
+							{/* @ts-ignore */}
+							{errors.dob.day?.message}
+						</p>
+					)}
+				</div>
+				<div>
+					{/* @ts-ignore */}
+					{errors?.dob?.year && (
+						<p className="text-red-500 px-[14px]">
+							{/* @ts-ignore */}
+							{errors.dob.year && "DOB: Year - "}
+							{/* @ts-ignore */}
+							{errors.dob.year?.message}
+						</p>
+					)}
+				</div>
 			</div>
-			{/* </div> */}
 		</>
 	)
 }
 
-export default FormPageOne
+// Schema  step 1 should either be residential or company
+export const schemaStep1 = pageOneSchema

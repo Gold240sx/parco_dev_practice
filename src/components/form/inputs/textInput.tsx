@@ -1,10 +1,10 @@
+"use client"
 import React from "react"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import InputLabel from "./inputLabel"
 import { ImCheckmark } from "react-icons/im"
 import { BiX } from "react-icons/bi"
-import { capitalize } from "@/functions/capitalize"
+import { Controller, useFormContext } from "react-hook-form"
 
 // Styles
 const inputRadius = "rounded-[8.8px]"
@@ -18,6 +18,7 @@ type TextInputProps = {
 		required: boolean
 		min?: number
 		max?: number
+		hideError?: boolean
 		onChange?: (value: string) => void
 		className?: string
 		minLength?: number
@@ -46,6 +47,7 @@ const TextInput = ({ props }: TextInputProps) => {
 		label,
 		required,
 		placeholder,
+		hideError = false,
 		className,
 		onChange,
 		min,
@@ -55,9 +57,6 @@ const TextInput = ({ props }: TextInputProps) => {
 		questionMark = false,
 		tooltipText = false,
 	} = props
-
-	const errors = false // replace with validation logic from zod.
-	const value = null // replace with value from react-hook-form
 
 	const autocomplete = (() => {
 		// Returns the correct autocomplete value based on the type prop
@@ -81,6 +80,33 @@ const TextInput = ({ props }: TextInputProps) => {
 		}
 	})()
 
+	const {
+		control,
+		getValues,
+		setValue,
+		watch,
+		formState: { errors },
+	} = useFormContext()
+
+	const displayErrors = () => {
+		/*  
+			Why not just display errors.name? This function allows nested object paths to be passed as the 
+			name prop, providing a more flexible way to access errors in nested objects.
+		*/
+
+		const errorPath = name
+			.split(".")
+			.reduce((acc, part) => acc?.[part], (errors as any) || {}) as {
+			message?: string
+		}
+		// console.log(errorPath !== undefined ? errorPath : name)
+		return typeof errorPath === "object" && "message" in errorPath
+			? String(errorPath.message)
+			: null
+	}
+
+	const value = watch(name)
+
 	return (
 		<div>
 			<div className="space-y-2">
@@ -98,46 +124,62 @@ const TextInput = ({ props }: TextInputProps) => {
 					}}
 				/>
 				<div className="relative">
-					<Input
-						id="input-10"
-						className={`peer pe-9 ${inputStyles} ${
-							errors ? "!border-red-300" : ""
-						}`}
-						autoCapitalize="on"
-						autoComplete={autocomplete}
-						placeholder={placeholder}
-						data-validated={
-							!errors && value === null ? "false" : "true"
-						}
-						onChange={(e) => onChange && onChange(e.target.value)}
-						type={type === "phone" ? "text" : type}
-						data-error={errors ? "true" : "false"}
-						required={required}
+					<Controller
+						name={name}
+						control={control}
+						render={({ field }) => (
+							<>
+								<Input
+									{...field}
+									onChange={(value) => {
+										// console.log(value.target.value)
+										if (type === "number") {
+											field.onChange(
+												value.target.valueAsNumber
+											)
+										} else {
+											field.onChange(value.target.value)
+										}
+									}}
+									id={`${name}-input`}
+									className={`peer pe-9 ${inputStyles} ${
+										errors[name] ? "!border-red-300" : ""
+									}`}
+									autoCapitalize="on"
+									autoComplete={autocomplete}
+									placeholder={placeholder}
+									data-validated={
+										!errors[name] && value && value !== ""
+											? "true"
+											: "false"
+									}
+									type={type ? type : "text"}
+									data-error={errors[name] ? "true" : "false"}
+									required={required}
+								/>
+								<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
+									{!errors[name] && value && value !== "" && (
+										<ImCheckmark
+											size={12}
+											className={`text-[#66D531]`}
+											aria-hidden="true"
+										/>
+									)}
+									{errors[name] && value !== "" && (
+										<BiX
+											size={20}
+											className={`text-red-500 stroke-2`}
+											aria-hidden="true"
+										/>
+									)}
+								</div>
+							</>
+						)}
 					/>
-					<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
-						{!errors && (
-							<ImCheckmark
-								size={12}
-								className={`text-[#66D531]`}
-								aria-hidden="true"
-							/>
-						)}
-						{errors && (
-							<BiX
-								size={20}
-								className={`text-red-500 stroke-2`}
-								aria-hidden="true"
-							/>
-						)}
-					</div>
 				</div>
-				{errors && (
-					<p
-						className="mt-2 text-xs text-destructive text-red-500 px-[14px]"
-						role="alert"
-						aria-live="polite">
-						{capitalize(label)} is invalid
-					</p>
+
+				{!hideError && displayErrors() && (
+					<p className="text-red-500 text-sm">{displayErrors()}</p>
 				)}
 			</div>
 		</div>

@@ -25,13 +25,6 @@ const MultiPageFormButtons = ({
 
 	return (
 		<div className="flex justify-between w-full">
-			{/* <PageButton
-				props={{
-					buttonClassName: `py-3.5 px-[10p]`,
-					text: "Back",
-					type: "button",
-				}}
-			/> */}
 			<BackButtonInline />
 			{!formFullyValidated ? (
 				<PageButton

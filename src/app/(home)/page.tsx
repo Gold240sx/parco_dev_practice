@@ -4,6 +4,7 @@ import Link from "next/link"
 import Modal from "@/components/layout/globalModal"
 import React, { useState, useEffect } from "react"
 import FormBody from "@/components/form/formBody"
+import OnboardingForm from "@/components/pageComponents/onBoardingForm"
 
 export default function Home() {
 	const searchParams = useSearchParams()
@@ -28,7 +29,14 @@ export default function Home() {
 	return (
 		<div className="relative h-full w-full flex-grow">
 			<div className="grid grid-cols-1 md:grid-cols-2 w-full h-full">
-				<FormBody className="col-span-1" />
+				{/* <FormBody className="col-span-1" /> */}
+				<OnboardingForm
+					props={{
+						setIsFormSubmitted: (value: boolean) => {},
+						setModalOpen: setModalOpen,
+						user: {}, // replace with actual user data
+					}}
+				/>
 				<div className=" col-span-1"></div>
 			</div>
 			<Modal
