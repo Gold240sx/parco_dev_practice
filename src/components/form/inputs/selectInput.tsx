@@ -2,6 +2,7 @@ import React, {
 	useState,
 	Dispatch,
 	SetStateAction,
+	useEffect,
 	useLayoutEffect,
 } from "react"
 import { useFormContext, Controller } from "react-hook-form"
@@ -23,7 +24,7 @@ type ReactSelectType = {
 	label: string
 }
 
-const inputStyles = `border-[1.5px] text-[18px] py-[10px] pl-[14px] radius-[8.8px] min-w-[100px] placeholder:text-[#A3A7AA] text-[#485057] border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] data-[validated='true']:border-[#66D531] data-[validated='true']:focus-visible:ring-0 data-[validated='true']:hover:border-[#328E08] data-[validated='true']:ring-0 data-[error='true']:focus-visible:ring-0 !data-[error='true']:focus-visible:border-red-500`
+const inputStyles = `border-[1.5px] text-[18px] !py-[20px] pl-[14px] radius-[8.8px] min-w-[100px] placeholder:text-[#A3A7AA] text-[#485057] border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] data-[validated='true']:border-[#66D531] data-[validated='true']:focus-visible:ring-0 data-[validated='true']:hover:border-[#328E08] data-[validated='true']:ring-0 data-[error='true']:focus-visible:ring-0 !data-[error='true']:focus-visible:border-red-500`
 
 type SelectInputProps = {
 	props: {
@@ -40,6 +41,7 @@ type SelectInputProps = {
 			| "username"
 		label: string
 		isMulti: boolean
+		labelClassName?: string
 		className?: string
 		placeholder?: string
 		required: boolean
@@ -68,7 +70,6 @@ const tempOptions = [
 ]
 
 const SelectInput = ({ props }: SelectInputProps) => {
-	const [valueState, setValueState] = useState<any>(null)
 	const {
 		name,
 		type = "text",
@@ -78,6 +79,7 @@ const SelectInput = ({ props }: SelectInputProps) => {
 		initialValue,
 		state,
 		selectClassName,
+		labelClassName,
 		hideError = false,
 		className,
 		placeholder,
@@ -119,12 +121,6 @@ const SelectInput = ({ props }: SelectInputProps) => {
 
 	const value = watch(name)
 
-	useLayoutEffect(() => {
-		if (state && getValues(name) !== value) {
-			setValueState(getValues(name))
-		}
-	}, [getValues, name, setValueState, state, value])
-
 	return (
 		<div className={`${className}`}>
 			<div className="space-y-2 relative">
@@ -136,6 +132,7 @@ const SelectInput = ({ props }: SelectInputProps) => {
 						requiredLabel: {
 							labelClassName: "",
 						},
+						labelClassName,
 						requiredPosition: "inline",
 						hasQuestionTooltip: questionMark,
 						tooltipText: tooltipText || "",
@@ -152,14 +149,18 @@ const SelectInput = ({ props }: SelectInputProps) => {
 
 						return (
 							<div className="relative group">
-								<ShadSelect onValueChange={field.onChange}>
+								<ShadSelect
+									value={field.value}
+									onValueChange={(value) => {
+										field.onChange(value)
+									}}>
 									<SelectTrigger
 										id={name}
 										data-validated={
 											isValid ? "true" : "false"
 										}
 										data-error={hasError ? "true" : "false"}
-										className={`peer border-[1.5px] text-[18px] py-[10px] pl-[14px] !rounded-[6.3px] min-w-[100px] !placeholder:text-[#A3A7AA] text-[#485057] 
+										className={`peer border-[1.5px] text-[18px] !py-[20px] pl-[14px] !rounded-[6.3px] !placeholder:text-[#A3A7AA] text-[#485057] 
 											border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] hover:border-[#34D1F5] hover:ring-[#81E3F9] group-hover:ring-[#81E3F9]
 											${isValid ? "data-[validated=true]:border-[#66D531]" : ""}
 											${isValid ? "data-[validated=true]:ring-0" : ""}
@@ -195,11 +196,13 @@ const SelectInput = ({ props }: SelectInputProps) => {
 										</div>
 									)}
 									{hasError && (
-										<BiX
-											size={20}
-											className="text-red-500 text-[12px] "
-											aria-hidden="true"
-										/>
+										<div className="bg-white rounded-full h-fit w-fit p-1 pointer-events-none">
+											<BiX
+												size={20}
+												className="text-red-500 text-[12px] stroke-[1px]"
+												aria-hidden="true"
+											/>
+										</div>
 									)}
 								</div>
 							</div>

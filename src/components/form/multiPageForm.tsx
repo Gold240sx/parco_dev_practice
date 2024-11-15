@@ -1,11 +1,5 @@
 "use client"
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	KeyboardEvent,
-	ReactNode,
-} from "react"
+import React, { useState, useEffect, useRef, ReactNode } from "react"
 import { useForm, FormProvider, FieldValues } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ZodSchema } from "zod"
@@ -13,13 +7,13 @@ import { ZodSchema } from "zod"
 import MultiPageBackNextButtons from "./multiPageFormButtons"
 import { MultiPageFormInternalFunctions } from "./multiPageFormInternalFunctions"
 import { totalFormSchema as MultiPageFormProps } from "./formSchema"
+import { toast } from "@/hooks/use-toast"
 
 export const MultiPageForm = <T extends FieldValues>({
 	schemas,
 	pageNames,
 	children,
 	onSubmit,
-	setModalOpen = () => {},
 	isReadyToClosePostForm,
 	confirmPageChildren,
 	options = {},
@@ -110,6 +104,16 @@ export const MultiPageForm = <T extends FieldValues>({
 						const formValues = getValues()
 						const completeFormData = { ...formData, ...formValues }
 						console.log("CompleteFormdata", completeFormData)
+						if (isUnderDevelopment) {
+							toast({
+								position: "bottom-right",
+								title: "Form Submitted Successfully!",
+								description: `Data: ${JSON.stringify(
+									completeFormData
+								)}`,
+								duration: 9000,
+							})
+						}
 						// console.log("data", data) // data only outputs the current page's data
 
 						// Submit the form data
@@ -125,7 +129,7 @@ export const MultiPageForm = <T extends FieldValues>({
 							reset,
 						})
 					})}
-					className="w-auto items-start md:my-6 px-0 md:py-8 relative">
+					className="w-auto items-start px-0 relative">
 					{/* <FormPreview
 						pageNames={PageNames}
 						currentPage={currentPage}
@@ -210,14 +214,14 @@ export const MultiPageForm = <T extends FieldValues>({
 			{formState.isSubmitSuccessful &&
 				wannaKeepPostFormOpen &&
 				!postFormChildren && (
-					<div className="flex flex-col items-center justify-center min-h-full h-fit">
+					<div className="flex flex-col items-center justify-center min-h-full flex-grow">
 						{!confirmPageChildren && (
 							<h2 className="text-4xl font-thin text-center mt-8">
 								🇺🇸🇺🇸 Form Data Submitted Successfully! 🇺🇸🇺🇸
 							</h2>
 						)}
 						{confirmPageChildren !== undefined && (
-							<div className="my-4 w-full h-fit">
+							<div className="my-4 w-full !flex-grow flex">
 								{confirmPageChildren}
 							</div>
 						)}

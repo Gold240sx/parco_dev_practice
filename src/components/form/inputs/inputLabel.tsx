@@ -42,11 +42,12 @@ const InputLabel = ({ props }: InputLabelProps) => {
 	} = props
 	return (
 		<Label htmlFor={name} className={`flex gap-2 ${labelClassName}`}>
-			<p className={`font-normal ${requiredLabel.labelClassName}`}>
+			<p
+				className={`font-normal ${requiredLabel.labelClassName} w-fit text-[18px]`}>
 				{capitalize(label)}
 			</p>
 			{required && (
-				<p className={requiredPosition}>
+				<p className={`${requiredPosition} my-auto`}>
 					<span className={`text-red-400 font-normal text-[18px]`}>
 						*
 					</span>

@@ -5,24 +5,27 @@ import TextInput from "@/components/form/inputs/textInput"
 import DOBInputGroup from "@/components/form/inputs/dobInputGroup"
 import PhoneNumberInput from "@/components/form/inputs/phoneNumberInput"
 import { pageOneSchema } from "../formSchema"
-import Swal from "sweetalert2"
+import DobErrors from "../dobErrors"
 
 export const Step1 = () => {
 	const currentDate = useMemo(() => new Date(), [])
 	const [nosyAgeField, setNosyAgeField] = useState(false)
 	const {
+		getValues,
 		formState: { errors },
 	} = useFormContext()
 
+	const isUnderDevelopment = true
+
 	return (
-		<>
-			<h5 className="text-3xl mb-4 text-balance font-[500]">
+		<div className="text-[18px] space-y-[20px]">
+			<h5 className="text-[24px] text-balance font-[500]">
 				Let&apos;s start with the basic information
 			</h5>
 			<p className="body1 text-[#495057]">
 				First we need to know your name, phone number, and birthday
 			</p>
-			<div className=" flex flex-col gap-[20px] my-10">
+			<div className=" flex flex-col gap-[20px]">
 				<TextInput
 					props={{
 						name: "firstName",
@@ -89,48 +92,21 @@ export const Step1 = () => {
 					type="button"
 					onClick={() => setNosyAgeField(!nosyAgeField)}
 					className="  cursor-pointer rounded-md !-mt-2 mx-[14px] flex mr-auto w-fit">
-					<p className="hover:underline !text-sky-500 underline-offset-2 !decoration-sky-500 w-fit">
+					<p className="hover:underline !text-sky-500 underline-offset-2 !decoration-sky-500 w-fit text-[16px]">
 						{nosyAgeField
 							? "Enter date instead"
 							: "Use my age instead?"}
 					</p>
 				</button>
 
-				<div>
-					{/* @ts-ignore */}
-					{errors?.dob?.month && (
-						<p className="text-red-500 px-[14px]">
-							{/* @ts-ignore */}
-							{errors.dob.month && "DOB: Month - "}
-							{/* @ts-ignore */}
-							{errors.dob.month?.message}
-						</p>
-					)}
-				</div>
-				<div>
-					{/* @ts-ignore */}
-					{errors?.dob?.day && (
-						<p className="text-red-500 px-[14px]">
-							{/* @ts-ignore */}
-							{errors.dob.day && "DOB: Day - "}
-							{/* @ts-ignore */}
-							{errors.dob.day?.message}
-						</p>
-					)}
-				</div>
-				<div>
-					{/* @ts-ignore */}
-					{errors?.dob?.year && (
-						<p className="text-red-500 px-[14px]">
-							{/* @ts-ignore */}
-							{errors.dob.year && "DOB: Year - "}
-							{/* @ts-ignore */}
-							{errors.dob.year?.message}
-						</p>
-					)}
-				</div>
+				{isUnderDevelopment && getValues().error && (
+					<button className="bg-red-500 text-white rounded px-4 py-2 mt-4">
+						Show Errors
+					</button>
+				)}
+				<DobErrors errors={errors} />
 			</div>
-		</>
+		</div>
 	)
 }
 

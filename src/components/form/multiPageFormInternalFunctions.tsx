@@ -59,7 +59,6 @@ const nextPage = async ({
 	if (isValid && currentPage < children.length - 1) {
 		setDirection(1) // Moving forward
 		setIsPreviewClick(false) // Regular navigation
-
 		// Save the current page's form data before jumping to another page
 		const currentPageData = getValues()
 		setFormData({ ...formData, ...currentPageData })

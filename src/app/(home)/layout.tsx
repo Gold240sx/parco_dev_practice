@@ -14,7 +14,7 @@ export default function TestLayout({
 				<Navbar />
 				<SubNavbarSaveNotification className="!absolute top-[75px] right-8" />
 			</div>
-			<main className="flex-grow h-fit">{children}</main>
+			<main className="flex-grow flex flex-col h-full">{children}</main>
 			<Footer />
 		</div>
 	)

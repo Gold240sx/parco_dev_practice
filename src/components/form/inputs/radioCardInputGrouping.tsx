@@ -7,6 +7,7 @@ import React, { useState } from "react"
 import ZoomImage from "@/assets/brands/zoom_rect.svg"
 import TeamsImage from "@/assets/brands/ms_teams.svg"
 import GoogleMeetImage from "@/assets/brands/google_meets.svg"
+import InputLabel from "./inputLabel"
 
 const options = [
 	{
@@ -43,7 +44,19 @@ export default function RadioCardInputGrouping({
 
 	return (
 		<div className="space-y-2">
-			<label className="block text-sm font-medium">{label}</label>
+			<InputLabel
+				props={{
+					label: label,
+					required: true,
+					requiredPosition: "inline",
+					requiredLabel: {
+						labelClassName: "font-normal text-[18px] max-w-[70%]",
+					},
+					hasQuestionTooltip: true,
+					tooltipText: "Explanation here",
+					name,
+				}}
+			/>
 			<Controller
 				name={name}
 				control={control}

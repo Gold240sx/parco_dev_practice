@@ -109,7 +109,7 @@ const MultiPageBackNextButtons = ({ props }: MultiPageBackNextButtonsProps) => {
 	}, [nextPage])
 
 	return (
-		<div className="flex justify-between">
+		<div className="flex justify-between pt-[10px] mt-[20px]">
 			{!isSubmitting && (
 				<button
 					type="button"
@@ -137,7 +137,7 @@ const MultiPageBackNextButtons = ({ props }: MultiPageBackNextButtonsProps) => {
 					}}
 					onTouchEnd={handleNextPage}
 					ref={nextButtonRef}
-					className={`${PageButtonStyles}`}>
+					className={`${PageButtonStyles} disabled:opacity-50 disabled:cursor-not-allowed`}>
 					Next
 				</button>
 			)}
@@ -146,7 +146,7 @@ const MultiPageBackNextButtons = ({ props }: MultiPageBackNextButtonsProps) => {
 					type="submit"
 					id="submit-button"
 					disabled={!isDirty || !isValid}
-					className={`${PageButtonStyles}`}
+					className={`${PageButtonStyles} disabled:opacity-50 disabled:cursor-not-allowed`}
 					ref={submitButtonRef}>
 					Submit
 				</button>
