@@ -20,13 +20,19 @@ const noOfDays = (
 	// If month is February and year is provided, check for leap year
 	if (month === "02" && year) {
 		if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
-			return Array.from({ length: 29 }, (_, i) => i + 1)
+			return Array.from({ length: 29 }, (_, i) =>
+				String(i + 1).padStart(2, "0")
+			)
 		}
-		return Array.from({ length: 28 }, (_, i) => i + 1)
+		return Array.from({ length: 28 }, (_, i) =>
+			String(i + 1).padStart(2, "0")
+		)
 	}
 
 	// Return days for the selected month
-	return Array.from({ length: monthDays[month] }, (_, i) => i + 1)
+	return Array.from({ length: monthDays[month] }, (_, i) =>
+		String(i + 1).padStart(2, "0")
+	)
 }
 
 export default noOfDays

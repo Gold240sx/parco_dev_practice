@@ -2,9 +2,19 @@ import { date, z } from "zod"
 import { validUSAreaCodes } from "@/types/arrayLists/validUSAreaCodes"
 
 export const dateOfBirthSchema = z.object({
-	day: z.number().int().min(1).max(31),
-	month: z.number().int().min(1).max(12),
-	year: z.number().int().min(1900).max(new Date().getFullYear()),
+	day: z.string().min(2, { message: "Required" }).max(31),
+	month: z.string().min(2, { message: "Required" }).max(12),
+	year: z
+		.string()
+		.min(4, { message: "Year must be exactly 4 digits" })
+		.refine(
+			(value) =>
+				Number(value) > 1900 &&
+				Number(value) < new Date().getFullYear(),
+			{
+				message: "Year must be between 1900 and the current year",
+			}
+		),
 })
 
 export const age = z.number().int().min(18).max(120)
@@ -27,22 +37,23 @@ export const pageOneSchema = z
 				return /^[A-Za-z\s]+$/.test(value)
 			}),
 		email: z.string().email(),
-		phoneNumber: z.object({
-			value: z
-				.string()
-				.length(10, "Phone number must be exactly 10 digits")
-				.regex(/^\d{10}$/, "Phone number must only contain digits")
-				.refine(
-					(value) => validUSAreaCodes.includes(value.substring(0, 3)),
-					{
-						message: "Invalid area code",
-					}
-				)
-				.refine((value) => !/(\d)\1{9}/.test(value), {
-					message:
-						"Phone number cannot contain all the same digits (e.g., 0000000000)",
-				}),
-		}),
+		phoneNumber: z
+			.string()
+			.length(14, "Phone number must be exactly 10 digits")
+			.regex(
+				/^\(\d{3}\) \d{3}-\d{4}$/,
+				"Phone number can only contain digits, spaces, hyphens, and parentheses"
+			)
+			.refine(
+				(value) => validUSAreaCodes.includes(value.substring(1, 4)),
+				{
+					message: "Invalid area code",
+				}
+			)
+			.refine((value) => !/(\d)\1{9}/.test(value), {
+				message:
+					"Phone number cannot contain all the same digits (e.g., 0000000000)",
+			}),
 		dob: dateOfBirthSchema.optional(),
 		age: age.optional(),
 	})
