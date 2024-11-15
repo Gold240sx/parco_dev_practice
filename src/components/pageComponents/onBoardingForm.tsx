@@ -9,6 +9,10 @@ import {
 	Step2,
 	schemaStep2,
 } from "@/components/form/pages/_index"
+import Swal from "sweetalert2"
+import { format } from "date-fns"
+import Link from "next/link"
+import { revalidatePath } from "next/cache"
 
 const pageNames = ["Basic Information", "Appointment Details"] // Define the names (optional) // defaults to item names from Zod
 const schemas: ZodType<any>[] = [schemaStep1, schemaStep2]
@@ -22,6 +26,8 @@ type OnboardingFormProps = {
 	}
 }
 
+const salesman = "Zach Burkland"
+
 const OnboardingForm = ({ props }: OnboardingFormProps) => {
 	const { setIsFormSubmitted, setModalOpen } = props
 	const [isReadyToClosePostForm, setIsReadyToClosePostForm] = useState(false)
@@ -29,11 +35,36 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 	const handleSubmit = async (data: any): Promise<any> => {
 		// Set form submission state
 		return new Promise<void>((resolve) => {
+			const date = format(data.date, "MMMM do, yyyy")
 			// Simulate server request with a delay
 			setTimeout(async () => {
 				console.log("Form Submitted", data)
 				// await UploadDataToSupabase(data)
-
+				Swal.fire({
+					title: "Appointment Set!",
+					showCloseButton: false,
+					showConfirmButton: false,
+					padding: "60px 80px",
+					customClass: {
+						popup: "custom-swal-popup",
+					},
+					html: `
+							<p class="text-balance">
+								Please check your email for the meeting link. You are booked for a 
+								<b>Federal Consult on ${date} with ${salesman}</b>
+							</p> 
+							<br/><br/> 
+							<div class="flex flex-col gap-4 md:flex-row sm:px-8 justify-between w-full align-middle items-center">
+								<p>
+									<b>Didn't get an email?</b>
+								</p>
+								<a target="_blank" href="/">
+									<button class="bg-[#60BE64] text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap">
+										Create Account
+									</button>
+								</a>
+							</div>`,
+				})
 				// Submission Form Function set to handleFullSubmit (search for)
 				setIsFormSubmitted?.(true)
 				resolve() // Resolve the promise after the delay
@@ -54,12 +85,12 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 					defaultValues: {
 						firstName: "John",
 						lastName: "Smith",
-						phoneNumber: "(469) 269-9639",
+						// phoneNumber: "(469) 269-9639",
 						email: "john.doe@usda.com",
 						dob: {
 							// month: "01",
-							day: "01",
-							year: "1990",
+							// day: "01",
+							year: "1960",
 						},
 						// age: 30,
 					},
@@ -78,37 +109,21 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 							pageValidity={[true, true, true, true]}
 							jumpToPage={console.log}
 						/> */}
-						<div className="flex flex-col items-center justify-center bg-zinc-100 p-6 rounded-md">
+						<div className="flex flex-col items-center justify-center">
 							<h2 className="text-4xl font-base text-zinc-600 pt-4 text-center sm:text-left pb-4 md:pb-0">
-								Schedule your service with us directly below!{" "}
-								<span className="text-sm text-center sm:text-right pt-2 mx-auto flex sm:ml-auto w-fit text-zinc-600">
-									(yellow buttons)
-								</span>
+								You are all set!
 							</h2>
 							<p className="pt-4">
-								Can't schedule just yet? We'll send a link to
-								your email to schedule just in case!
+								We will send you an email with the meeting link
+								and confirmation details.
 							</p>
-							<hr className="my-4 bg-zinc-300 h-0.5 w-full" />
-							<div className="flex flex-col gap-4 pt-4 md:grid md:grid-cols-4 justify-center items-center md:gap-10">
-								<p className="text-md col-span-2 text-zinc-500">
-									If you don't see a time that works for you,
-									or if the scheduler fails to load, please
-									call us to schedule an alternative time, and
-									we'll do our best to accomidate. Thank you!
-								</p>
-								<button type="submit" className="col-span-1">
-									Resubmit
+							<Link href="/">
+								<button
+									onClick={() => window.location.reload()}
+									className="bg-sky-500 text-white py-4 px-8 rounded-[8.8px] min-w-[137px] text-center font-semibold text-[18px] whitespace-nowrap mt-8">
+									Go to Dashboard
 								</button>
-								{/* URL links */}
-								<div className="flex flex-col col-span-2 gap-4 my-4">
-									<div className="border border-zinc-300 p-3 rounded-md flex flex-col gap-4">
-										<h2 className="text-md font-thin">
-											Secure timeslot by Service Type:{" "}
-										</h2>
-									</div>
-								</div>
-							</div>
+							</Link>
 						</div>
 					</div>
 				}

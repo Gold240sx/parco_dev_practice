@@ -2,10 +2,10 @@
 import React, { useState, useMemo } from "react"
 import { useFormContext } from "react-hook-form"
 import TextInput from "@/components/form/inputs/textInput"
-import SelectInput from "../inputs/selectInput"
 import DOBInputGroup from "@/components/form/inputs/dobInputGroup"
 import PhoneNumberInput from "@/components/form/inputs/phoneNumberInput"
 import { pageOneSchema } from "../formSchema"
+import Swal from "sweetalert2"
 
 export const Step1 = () => {
 	const currentDate = useMemo(() => new Date(), [])

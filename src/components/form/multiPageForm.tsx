@@ -1,17 +1,18 @@
 "use client"
-import { useState, useEffect, useRef, KeyboardEvent, ReactNode } from "react"
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	KeyboardEvent,
+	ReactNode,
+} from "react"
 import { useForm, FormProvider, FieldValues } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ZodSchema } from "zod"
-import { FormPreview } from "./multiPageFormPreview"
-import MultiPageBackNextButtons from "./multiPageBackNextButtons"
+// import { FormPreview } from "./multiPageFormPreview"
+import MultiPageBackNextButtons from "./multiPageFormButtons"
 import { MultiPageFormInternalFunctions } from "./multiPageFormInternalFunctions"
 import { totalFormSchema as MultiPageFormProps } from "./formSchema"
-
-// import { FormPreview } from "./MultiPageFormPreview"
-import MultiPageFormButtons from "./multiPageFormButtons"
-
-import React from "react"
 
 export const MultiPageForm = <T extends FieldValues>({
 	schemas,
@@ -220,20 +221,6 @@ export const MultiPageForm = <T extends FieldValues>({
 								{confirmPageChildren}
 							</div>
 						)}
-						<button
-							onClick={() => {
-								reset() // Reset the form after submission
-								setFormData({} as T) // Reset the form data
-								setCurrentPage(0) // Reset to the first page
-								setPageValidity(
-									Array(children.length).fill(false)
-								) // Reset page validity
-								setModalOpen(false)
-							}}
-							className="bg-zinc-800 hover:bg-black text-white rounded px-4 py-2 mt-4 mb-3">
-							I've scheduled my appointment / not ready to
-							schedule (Close and reset form)
-						</button>
 						{submitMultiple && (
 							<button
 								onClick={() => {
