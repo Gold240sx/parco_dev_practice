@@ -1,6 +1,6 @@
-# Parko Dev Practice
+# Parco Dev Practice
 
-This is a component test for Parko's React / Next.js developer position.
+This is a component test for Parco's React / Next.js developer position.
 
 ## Getting Started
 

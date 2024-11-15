@@ -83,6 +83,7 @@ const TextInput = ({ props }: TextInputProps) => {
 	const {
 		control,
 		getValues,
+		getFieldState,
 		setValue,
 		watch,
 		formState: { errors },
@@ -142,36 +143,47 @@ const TextInput = ({ props }: TextInputProps) => {
 										}
 									}}
 									id={`${name}-input`}
-									className={`peer pe-9 ${inputStyles} ${
-										errors[name] ? "!border-red-300" : ""
+									className={`peer pe-9 !text-[18px] ${inputStyles} ${
+										getFieldState(name).error
+											? "!border-red-300"
+											: ""
 									}`}
 									autoCapitalize="on"
 									autoComplete={autocomplete}
 									placeholder={placeholder}
 									data-validated={
-										!errors[name] && value && value !== ""
+										!getFieldState(name).error &&
+										value &&
+										value !== ""
 											? "true"
 											: "false"
 									}
 									type={type ? type : "text"}
-									data-error={errors[name] ? "true" : "false"}
+									data-error={
+										getFieldState(name).error
+											? "true"
+											: "false"
+									}
 									required={required}
 								/>
 								<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
-									{!errors[name] && value && value !== "" && (
-										<ImCheckmark
-											size={12}
-											className={`text-[#66D531]`}
-											aria-hidden="true"
-										/>
-									)}
-									{errors[name] && value !== "" && (
-										<BiX
-											size={20}
-											className={`text-red-500 stroke-2`}
-											aria-hidden="true"
-										/>
-									)}
+									{!getFieldState(name).error &&
+										value &&
+										value !== "" && (
+											<ImCheckmark
+												size={12}
+												className={`text-[#66D531]`}
+												aria-hidden="true"
+											/>
+										)}
+									{getFieldState(name).error &&
+										value !== "" && (
+											<BiX
+												size={20}
+												className={`text-red-500 stroke-2`}
+												aria-hidden="true"
+											/>
+										)}
 								</div>
 							</>
 						)}

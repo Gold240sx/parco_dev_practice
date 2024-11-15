@@ -21,8 +21,8 @@ const poppins = localFont({
 })
 
 export const metadata: Metadata = {
-	title: "Parko Dev Test",
-	description: "Parko Dev Test",
+	title: "Parco Dev Test",
+	description: "Parco Dev Test",
 }
 
 export default function RootLayout({

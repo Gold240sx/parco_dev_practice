@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import ParkoLogo from "@/assets/branding/parco_large.png"
+import ParcoLogo from "@/assets/branding/parco_large.png"
 import { FaPhoneAlt } from "react-icons/fa"
 import SubNavbarSaveNotification from "./subNavbarSaveNotification"
 import PageLoadingIndicator from "./pageLoadingIndicator"
@@ -12,8 +12,8 @@ const Navbar = () => {
 			<div className="bg-white flex justify-between h-[61px] px-6 items-center">
 				<Link href="/" className="flex-1">
 					<Image
-						src={ParkoLogo}
-						alt="Parko Logo"
+						src={ParcoLogo}
+						alt="Parco Logo"
 						className="h-auto w-[108px]"
 					/>
 				</Link>

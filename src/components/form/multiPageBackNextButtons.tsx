@@ -16,6 +16,7 @@ interface MultiPageBackNextButtonsProps {
 		currentPage: number
 		children: ReactNode[]
 		submitCount: number
+		isUnderDevelopment?: boolean
 		backButtonRef: RefObject<HTMLButtonElement>
 		nextButtonRef: RefObject<HTMLButtonElement>
 		submitButtonRef: RefObject<HTMLButtonElement>
@@ -57,6 +58,7 @@ const MultiPageBackNextButtons = ({ props }: MultiPageBackNextButtonsProps) => {
 		backButtonRef,
 		nextButtonRef,
 		submitButtonRef,
+		isUnderDevelopment,
 		submitCount,
 		handleSubmit,
 		formState: { isSubmitting, isDirty, isValid, errors },
@@ -127,8 +129,10 @@ const MultiPageBackNextButtons = ({ props }: MultiPageBackNextButtonsProps) => {
 					id="next-button"
 					onMouseDown={handleNextPage}
 					onClick={() => {
-						console.log("errors", errors)
-						console.log("values", getValues())
+						if (isUnderDevelopment) {
+							console.log("errors", errors)
+							console.log("values", getValues())
+						}
 						handleNextPage()
 					}}
 					onTouchEnd={handleNextPage}

@@ -124,7 +124,7 @@ export const MultiPageForm = <T extends FieldValues>({
 							reset,
 						})
 					})}
-					className="overflow-x-hidden w-auto items-start md:my-6 px-0 md:py-8 relative">
+					className="w-auto items-start md:my-6 px-0 md:py-8 relative">
 					{/* <FormPreview
 						pageNames={PageNames}
 						currentPage={currentPage}
@@ -166,6 +166,7 @@ export const MultiPageForm = <T extends FieldValues>({
 							children,
 							backButtonRef,
 							nextButtonRef,
+							isUnderDevelopment,
 							submitCount: formState.submitCount,
 							submitButtonRef,
 							formState,
