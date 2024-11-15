@@ -69,12 +69,12 @@ const FormBody = ({ className }: { className: string }) => {
 
 	return (
 		<div
-			className={`${className} bg-white px-[60px] min-h-screen pt-[60px] !pb-[140px] text-black`}>
+			className={`${className} bg-white min-w-[434px] place-items-center justify-center items-center px-[60px] min-h-screen pt-[60px] !space-y-[20px] !pb-[140px] text-black`}>
 			{/* Gap - 20px between inputs */}
 			<FormProvider {...useForm()}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FormPageOne props={{ nosyAgeField, setNosyAgeField }} />
-					{/* <FormPageTwo props={{ register, watch, errors }} /> */}
+					<FormPageTwo props={{ register, watch, errors }} />
 				</form>
 			</FormProvider>
 			<MultiPageFormButtons
