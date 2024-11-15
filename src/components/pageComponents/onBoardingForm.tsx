@@ -12,6 +12,7 @@ import {
 
 const pageNames = ["Basic Information", "Appointment Details"] // Define the names (optional) // defaults to item names from Zod
 const schemas: ZodType<any>[] = [schemaStep1, schemaStep2]
+const isUnderDevelopment = process.env.REACT_APP_IS_UNDER_DEVELOPMENT === "true"
 
 type OnboardingFormProps = {
 	props: {
@@ -47,7 +48,7 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 				schemas={schemas}
 				isReadyToClosePostForm={isReadyToClosePostForm}
 				pageNames={pageNames}
-				isUnderDevelopment={false}
+				isUnderDevelopment={isUnderDevelopment}
 				options={{
 					submitMultiple: false,
 					defaultValues: {

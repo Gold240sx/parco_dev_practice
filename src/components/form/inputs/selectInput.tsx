@@ -16,6 +16,7 @@ import {
 import InputLabel from "./inputLabel"
 import { ImCheckmark } from "react-icons/im"
 import { BiX } from "react-icons/bi"
+import { getErrorMap } from "zod"
 
 type ReactSelectType = {
 	value: string
@@ -91,6 +92,7 @@ const SelectInput = ({ props }: SelectInputProps) => {
 		control,
 		setValue,
 		getValues,
+		getFieldState,
 		register,
 		trigger,
 		watch,
@@ -144,9 +146,9 @@ const SelectInput = ({ props }: SelectInputProps) => {
 					name={name}
 					control={control}
 					render={({ field }) => {
+						const hasError = !!getFieldState(name).error
 						const isValid =
-							!errors[name] && field.value && field.value !== ""
-						const hasError = !!errors[name]
+							!hasError && field.value && field.value !== ""
 
 						return (
 							<div className="relative group">
@@ -157,11 +159,15 @@ const SelectInput = ({ props }: SelectInputProps) => {
 											isValid ? "true" : "false"
 										}
 										data-error={hasError ? "true" : "false"}
-										className={`peer border-[1.5px] text-[18px] py-[10px] pl-[14px] rounded-[8.8px] min-w-[100px] !placeholder:text-[#A3A7AA] text-[#485057] 
+										className={`peer border-[1.5px] text-[18px] py-[10px] pl-[14px] !rounded-[6.3px] min-w-[100px] !placeholder:text-[#A3A7AA] text-[#485057] 
 											border-[#D2D6DA] focus:border-[#34D1F5] focus-visible:ring-[#81E3F9] hover:border-[#34D1F5] hover:ring-[#81E3F9] group-hover:ring-[#81E3F9]
 											${isValid ? "data-[validated=true]:border-[#66D531]" : ""}
 											${isValid ? "data-[validated=true]:ring-0" : ""}
-											${hasError ? "!data-[error=true]:focus-visible:border-red-500" : ""}
+											${
+												hasError
+													? "!border-red-500 !data-[error=true]:focus-visible:border-red-500"
+													: ""
+											}
 										`}>
 										<SelectValue
 											placeholder={placeholder}
@@ -179,17 +185,19 @@ const SelectInput = ({ props }: SelectInputProps) => {
 									</SelectContent>
 								</ShadSelect>
 								<div className="absolute inset-y-0 right-3 flex items-center">
-									{!errors[name] && field.value && (
-										<ImCheckmark
-											size={16}
-											className="text-[#66D531]"
-											aria-hidden="true"
-										/>
+									{!hasError && field.value && (
+										<div className="bg-white rounded-full h-fit w-fit p-1 pointer-events-none">
+											<ImCheckmark
+												size={12}
+												className="text-[#66D531] text-[12px] "
+												aria-hidden="true"
+											/>
+										</div>
 									)}
-									{errors[name] && (
+									{hasError && (
 										<BiX
 											size={20}
-											className="text-red-500"
+											className="text-red-500 text-[12px] "
 											aria-hidden="true"
 										/>
 									)}

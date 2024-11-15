@@ -28,7 +28,7 @@ export const Step2 = () => {
 			</h5>
 			<div className="w-full justify-center items-center flex">
 				<Controller
-					name="appointmentDate"
+					name="date"
 					control={control}
 					render={({ field }) => {
 						const { value, onChange } = field
@@ -42,11 +42,10 @@ export const Step2 = () => {
 									toDate={addOneMonthToCurrentDate()}
 									className="border border-gray-300 rounded-lg shadow-sm"
 								/>
-								{errors.appointmentDate && (
+								{errors.date && (
 									<p className="text-red-500 text-sm mt-1">
-										{typeof errors.appointmentDate
-											?.message === "string" &&
-											errors.appointmentDate?.message}
+										{typeof errors.date?.message ===
+											"string" && errors.date?.message}
 									</p>
 								)}
 							</div>
@@ -57,7 +56,7 @@ export const Step2 = () => {
 			{/* <TimeInput /> */}
 			<SelectInput
 				props={{
-					name: "timeSlot",
+					name: "time",
 					isMulti: false,
 					label: "What time works best on the day selected?",
 					required: true,

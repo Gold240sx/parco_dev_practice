@@ -63,8 +63,8 @@ export const pageOneSchema = z
 	})
 
 export const pageTwoSchema = z.object({
-	appointmentDate: date(),
-	timeSlot: z.string().min(1),
+	date: date(),
+	time: z.string().min(1),
 	platform: platformSchema,
 })
 
