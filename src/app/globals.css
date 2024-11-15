@@ -62,4 +62,22 @@ body {
 	:root {
 		--radius: 0.5rem;
 	}
+
+	.swal2-title {
+		padding-inline: 80px !important;
+		padding-block: 60px !important;
+	}
+
+	.custom-swal-popup {
+		width: fit-content;
+		min-width: 60vw !important;
+		max-width: min(900px, 80vw) !important;
+		margin: 40px auto;
+	}
+
+	@media (max-width: 250px) {
+		.custom-swal-popup {
+			margin: 20px auto;
+		}
+	}
 }

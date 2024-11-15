@@ -13,19 +13,19 @@ const options = [
 		id: "radio-12-zoom",
 		value: "zoom",
 		image: ZoomImage,
-		label: "Card",
+		label: "Zoom",
 	},
 	{
 		id: "radio-12-google-meet",
 		value: "google_meet",
 		image: GoogleMeetImage,
-		label: "Apple Pay",
+		label: "Google Meet",
 	},
 	{
 		id: "radio-12-teams",
 		value: "teams",
 		image: TeamsImage,
-		label: "PayPal",
+		label: "Teams",
 	},
 ]
 

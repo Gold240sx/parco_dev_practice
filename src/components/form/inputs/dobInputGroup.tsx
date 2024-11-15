@@ -136,6 +136,9 @@ const DOBInputGroup = ({ props }: DOBInputGroupType) => {
 								label: "Day",
 								type: "text",
 								hideError: true,
+								disabled:
+									dayOptions.length === 0 ||
+									getValues("dob.month") === "",
 								// max: currentDate.getFullYear(),
 								required: false,
 								placeholder: "dd",
