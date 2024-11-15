@@ -2,6 +2,8 @@
 
 This is a component test for Parco's React / Next.js developer position.
 
+Note: A breakdown of all developer notes can be found in the [`DevReadme.md`](https://github.com/Gold240sx/parco_dev_practice/blob/main/DevReadme.md) file.
+
 ## Getting Started
 
 First, add copy the `.env.example` file twice and rename them to `.env.development` and `.env.production`.
