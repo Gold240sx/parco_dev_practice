@@ -76,6 +76,8 @@ to see the result.
 -   React-icons
 -   Shadcn / OriginUI
 -   React-hook-form
+-   React-Email
+-   Resend API (For sending emails)
 -   React-aria
 -   Date-fns
 -   Zod
