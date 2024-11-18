@@ -6,8 +6,6 @@
 
 The component belongs to a multi-page form, so the validation of one screen is in direct connection to the validation of the form as a whole. Because of this, I built out the first screen as well, since it didn't add much to the duration of development time and assisted in the overall coherant design styles across the form pages. It also allowed me to prove the working handling of form data sumission for testing of my schema as a whole.
 
-### Details
-
 #### Page 1 of the form
 
 -   Phone Number autoformats as the user types.
@@ -22,9 +20,16 @@ The component belongs to a multi-page form, so the validation of one screen is i
 
 #### Page 2 of the form
 
+#### Form Submission and Email
+
+-   The Formdata is passed into the handleSubmit function, which then passes the data through the sendAllEmails function. The sendAllEmailsFunction, is passed a email name, which is then looked up by the function and once it finds the associated email template, it runs the api call to send an email for each email in the sendAllEmails function. This is a simple way to send multiple emails at once, and can be easily expanded upon. If there's a mistake, then the error is caught the first time and is displayed to the developer. The function is wrapped in a try catch and promise.all to ensure that all the emails are successfully sent, before returning a success message to the user.
+
+### Details
+
 -   I recreated the zoom logo into SVG format for faster loading times and better quality.
 -   I dowloaded the others into SVG for the same reason.
 -   Calendar is set to limit the date range to a month out from the current date. (Can be easily changed), and I've worked with other calendars before if you're looking for alternative behaviors.
+-   Custom, and responsive Parco email template, for the onboarding email.
 
 ### Why I chose certain technologies and libraries
 
@@ -58,3 +63,11 @@ The component belongs to a multi-page form, so the validation of one screen is i
 #### React Icons
 
 -   Provides a simple way to use icons in react projects.
+
+#### React-Email
+
+-   I've used this library before for sending emails. It's simple and works seamlessly with Resend for sending emails and responsive email templates from a React / Next.js project.
+
+#### Resend
+
+-   Compared to other email services, like Sendgrid, it's not a pain in the butt for onboarding companies. Domain verification is simple.
