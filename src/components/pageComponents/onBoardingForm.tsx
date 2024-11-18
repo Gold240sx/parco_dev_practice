@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from "react"
 import { ZodType } from "zod"
+import { SendAllEmailsViaAPI } from "@/functions/sendAllEmails"
 import MultiPageForm from "../form/multiPageForm"
-import { FormPreview } from "../form/multiPageFormPreview"
+// import { FormPreview } from "../form/multiPageFormPreview"
 import {
 	Step1,
 	schemaStep1,
@@ -12,7 +13,6 @@ import {
 import Swal from "sweetalert2"
 import { format } from "date-fns"
 import Link from "next/link"
-import { revalidatePath } from "next/cache"
 
 const pageNames = ["Basic Information", "Appointment Details"] // Define the names (optional) // defaults to item names from Zod
 const schemas: ZodType<any>[] = [schemaStep1, schemaStep2]
@@ -42,28 +42,67 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 
 			setTimeout(async () => {
 				console.log("Form Submitted", data)
+				const formValues = data
 				try {
-					const response = await fetch("/api/submitAppointment", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(payload),
-					})
+					const { data: SendAllEmailsViaApiData, error } =
+						await SendAllEmailsViaAPI([
+							{
+								// Email to the company
+								label: "Onboarding Form Submitted",
+								subject: "Onboarding Form Submitted",
+								from:
+									process.env.EMAIL_FROM ||
+									"Parco <onboarding@resend.dev>",
+								to: formValues.email,
+								emailTemplate: "ParcoOnboardingEmail",
+								templateProps: formValues,
+								text: `Body Data:
+									firstName: ${data.firstName},
+									lastName: ${data.lastName},
+									email: ${data.email},
+									phoneNumber: ${data.phoneNumber},
+									date: ${data.date},
+									time: ${data.time},
+									platform: ${data.platform},
+									currentDate: ${date},
+								`,
+							},
+							{
+								// Email to the submitter of the form
+								label: "Form Confirmation to user",
+								from:
+									process.env.EMAIL_FROM ||
+									"Parco <onboarding@resend.dev>",
+								subject: `${data.firstName} ${data.lastName} - Form Submission Received`,
+								to: `${data.email}`,
+								emailTemplate: "BasicEmail",
+								templateProps: formValues,
+								text: `Body Data:
+									firstName: ${data.firstName},
+									email: ${data.email},
+									message: "Thank you for submitting the form. We will get back to you soon.",
+							`,
+							},
+						])
 
-					if (!response.ok) {
-						throw new Error("Failed to submit appointment details")
-					}
-
-					Swal.fire({
-						title: "Appointment Set!",
-						showCloseButton: false,
-						showConfirmButton: false,
-						// padding: "60px 80px", // commented out because of undesired padding on small screen sizes.
-						customClass: {
-							popup: "custom-swal-popup",
-						},
-						html: `
+					if (error) {
+						console.error("Error sending emails:", error)
+						Swal.fire({
+							title: "Error",
+							text: "Failed to send confirmation emails. Please try again.",
+							icon: "error",
+						})
+					} else {
+						// Show success message only if the api call was successful
+						Swal.fire({
+							title: "Appointment Set!",
+							showCloseButton: false,
+							showConfirmButton: false,
+							// padding: "60px 80px", // commented out because of undesired padding on small screen sizes.
+							customClass: {
+								popup: "custom-swal-popup",
+							},
+							html: `
 							<p class="text-balance">
 								Please check your email for the meeting link. You are booked for a 
 								<b>Federal Consult on ${date} with ${salesman}</b>
@@ -79,7 +118,8 @@ const OnboardingForm = ({ props }: OnboardingFormProps) => {
 									</button>
 								</a>
 							</div>`,
-					})
+						})
+					}
 				} catch (error) {
 					console.error(
 						"Error submitting appointment details:",
