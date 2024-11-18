@@ -1,5 +1,7 @@
 # Parco Dev Practice
 
+<img src="https://i.ibb.co/0cPzFSS/Property-1-Dark.png" alt="Property-1-Dark" border="0">
+
 This is a component test for Parco's React / Next.js developer position.
 
 Note: A breakdown of all developer notes can be found in the [`DevReadme.md`](https://github.com/Gold240sx/parco_dev_practice/blob/main/DevReadme.md) file.
@@ -77,7 +79,7 @@ to see the result.
 -   Shadcn / OriginUI
 -   React-hook-form
 -   React-Email
--   Resend API (For sending emails)
+-   Resend API
 -   React-aria
 -   Date-fns
 -   Zod
