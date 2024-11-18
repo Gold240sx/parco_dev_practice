@@ -6,9 +6,15 @@ Note: A breakdown of all developer notes can be found in the [`DevReadme.md`](ht
 
 ## Getting Started
 
-First, add copy the `.env.example` file twice and rename them to `.env.development` and `.env.production`.
+First, add copy the `.env.example` file twice and rename them to `.env.development` and `.env.production`. An example of how everything should be set up can also be found in the .env.sample file.
 
 Add the contents to the files as shown below:
+
+```bash
+# .env
+NEXT_RESEND_API_KEY=re_resend_api_key
+EMAIL_FROM="Your Name <yourEmailConnectedTo@YourResendApiKey.com>"
+```
 
 ```bash
 # .env.development
