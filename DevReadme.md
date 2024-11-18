@@ -20,16 +20,14 @@ The component belongs to a multi-page form, so the validation of one screen is i
 
 #### Page 2 of the form
 
-#### Form Submission and Email
-
--   The Formdata is passed into the handleSubmit function, which then passes the data through the sendAllEmails function. The sendAllEmailsFunction, is passed a email name, which is then looked up by the function and once it finds the associated email template, it runs the api call to send an email for each email in the sendAllEmails function. This is a simple way to send multiple emails at once, and can be easily expanded upon. If there's a mistake, then the error is caught the first time and is displayed to the developer. The function is wrapped in a try catch and promise.all to ensure that all the emails are successfully sent, before returning a success message to the user.
-
-### Details
-
 -   I recreated the zoom logo into SVG format for faster loading times and better quality.
 -   I dowloaded the others into SVG for the same reason.
 -   Calendar is set to limit the date range to a month out from the current date. (Can be easily changed), and I've worked with other calendars before if you're looking for alternative behaviors.
+
+#### Form Submission and Email
+
 -   Custom, and responsive Parco email template, for the onboarding email.
+-   The Formdata is passed into the handleSubmit function, which then passes the data through the sendAllEmails function. The sendAllEmailsFunction, is passed a email name, which is then looked up by the function and once it finds the associated email template, it runs the api call to send an email for each email in the sendAllEmails function. This is a simple way to send multiple emails at once, and can be easily expanded upon. If there's a mistake, then the error is caught the first time and is displayed to the developer. The function is wrapped in a try catch and promise.all to ensure that all the emails are successfully sent, before returning a success message to the user.
 
 ### Why I chose certain technologies and libraries
 
